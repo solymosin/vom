@@ -1,0 +1,40 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>figs/mActionZoomIn.png</file>
+        <file>figs/mActionZoomOut.png</file>
+        <file>figs/mActionFileSaveAs.png</file>
+        <file>figs/mActionAddRasterLayer.png</file>
+        <file>figs/1265531541_edit_add.png</file>
+        <file>figs/delete.png</file>
+        <file>figs/mActionMeasure.png</file>
+        <file>figs/pan.png</file>
+        <file>figs/Refresh.png</file>
+        <file>figs/save.png</file>
+        <file>figs/tf2.png</file>
+        <file>figs/mActionFilePrint.png</file>
+        <file>figs/pointer.png</file>
+        <file>figs/mActionSelectedToTop.png</file>
+        <file>figs/Actions-draw-freehand-icon.png</file>
+        <file>figs/Actions-pencil-icon.png</file>
+        <file>figs/App-Adobe-Acrobat-Reader-icon.png</file>
+        <file>figs/Misc-Applications-icon.png</file>
+        <file>figs/Pen-2-icon.png</file>
+        <file>figs/Pencil-icon.png</file>
+        <file>figs/ruler-icon.png</file>
+        <file>figs/rulers-icon.png</file>
+        <file>figs/Rulers-icon.png</file>
+        <file>figs/Semicircle-ruler-icon.png</file>
+        <file>figs/Triangle-ruler-icon.png</file>
+        <file>figs/Close-icon.png</file>
+        <file>figs/Sign-Close-icon.png</file>
+        <file>figs/Symbols-Delete-icon.png</file>
+        <file>figs/linepointer.png</file>
+        <file>figs/resize-diag-1-icon.png</file>
+        <file>figs/glossy-3d-blue-delete-icon.png</file>
+        <file>figs/Actions-object-flip-horizontal-icon.png</file>
+        <file>figs/Editing-Rotation-Ccw-icon.png</file>
+        <file>figs/Editing-Rotation-Cw-icon.png</file>
+        <file>figs/Freemasonry.png</file>
+        <file>figs/Freemasonryb.png</file>
+    </qresource>
+</RCC>
