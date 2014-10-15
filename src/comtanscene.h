@@ -26,6 +26,7 @@ public:
     comtanScene(QObject *parent=0);
     int kijeloltGomb;
     double dPix;
+    QGraphicsTextItem *lab;
 
 public slots:
     void gombKijelol(int i);

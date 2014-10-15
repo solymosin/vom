@@ -36,5 +36,6 @@
         <file>figs/Editing-Rotation-Cw-icon.png</file>
         <file>figs/Freemasonry.png</file>
         <file>figs/Freemasonryb.png</file>
+        <file>figs/label-icon.png</file>
     </qresource>
 </RCC>

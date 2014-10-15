@@ -39,6 +39,14 @@ void comtanScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent){
             addItem(vonal);
             emit itemInsertedV(vonal);
             break;
+        case 4:
+            lab = new QGraphicsTextItem("ide írj valamit");
+            lab->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable | QGraphicsItem::ItemIsMovable);
+            lab->setTextInteractionFlags(Qt::TextEditorInteraction);
+            addItem(lab);
+            lab->setPos(mouseEvent->scenePos());
+            //emit itemInserted(*lab);
+            break;
         default:
             ;
     }

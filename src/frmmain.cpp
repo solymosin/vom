@@ -159,36 +159,7 @@ frmMain::frmMain(QWidget *parent): QMainWindow(parent), ui(new Ui::frmMain){
     //emptyb->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
     //ui->mainToolBar->addWidget(emptyb);
 
-    QLabel *lab5 = new QLabel;
-    lab5->setText("Szín: ");
-    ui->mainToolBar->addWidget(lab5);
 
-    //http://www.qtcentre.org/threads/19916-Color-ComboBox
-    cb = new QComboBox(this);
-    const QStringList colorNames = QColor::colorNames();
-    int index = 0;
-    foreach (const QString &colorName, colorNames) {
-        const QColor color(colorName);
-        cb->addItem(colorName, color);
-        const QModelIndex idx = cb->model()->index(index++, 0);
-        cb->model()->setData(idx, color, Qt::BackgroundColorRole);
-    }
-    cb->setCurrentText("yellow");
-    connect(cb, SIGNAL(currentIndexChanged(QString)), this, SLOT(szinez()));
-    ui->mainToolBar->addWidget(cb);
-
-    QWidget* emptyc = new QWidget();
-    emptyc->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
-    ui->mainToolBar->addWidget(emptyc);
-
-    betu = new QSpinBox;
-    betu->setValue(12);
-    betu->setMaximum(36);
-    betu->setMinimum(8);
-    QLabel *lab6 = new QLabel;
-    lab6->setText("Betű: ");
-    ui->mainToolBar->addWidget(lab6);
-    ui->mainToolBar->addWidget(betu);
 
     QWidget* emptyd = new QWidget();
     emptyd->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
@@ -288,6 +259,14 @@ frmMain::frmMain(QWidget *parent): QMainWindow(parent), ui(new Ui::frmMain){
     connect(tbpont, SIGNAL(clicked()), this, SLOT(gombsel02()));
     bar2->addWidget(tbpont);
 
+    tblab = new QToolButton;
+    tblab->setIcon(QIcon(":/images/figs/label-icon.png"));
+    tblab->setToolTip("Pontozás");
+    tblab->setCheckable(true);
+    connect(tblab, SIGNAL(clicked()), this, SLOT(gombsel04()));
+    bar2->addWidget(tblab);
+
+
     bar2->addSeparator();
 
     //QToolButton *tbzoomin = new QToolButton;
@@ -367,7 +346,60 @@ frmMain::frmMain(QWidget *parent): QMainWindow(parent), ui(new Ui::frmMain){
     connect(tbszog, SIGNAL(clicked()), this, SLOT(szogmero()));
     bar2->addWidget(tbszog);
 
+    /*3. toolbar*/
 
+    QToolBar *bar3 = new QToolBar;
+    bar3->setOrientation(Qt::Horizontal);
+    bar3->setAllowedAreas(Qt::BottomToolBarArea);
+    addToolBar(Qt::BottomToolBarArea, bar3);
+
+    QLabel *lab5 = new QLabel;
+    lab5->setText("Szín: ");
+    bar3->addWidget(lab5);
+
+    //http://www.qtcentre.org/threads/19916-Color-ComboBox
+    cb = new QComboBox(this);
+    const QStringList colorNames = QColor::colorNames();
+    int index = 0;
+    foreach (const QString &colorName, colorNames) {
+        const QColor color(colorName);
+        cb->addItem(colorName, color);
+        const QModelIndex idx = cb->model()->index(index++, 0);
+        cb->model()->setData(idx, color, Qt::BackgroundColorRole);
+    }
+    cb->setCurrentText("yellow");
+    connect(cb, SIGNAL(currentIndexChanged(QString)), this, SLOT(szinez()));
+    bar3->addWidget(cb);
+
+    QWidget* emptyc = new QWidget();
+    emptyc->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
+    bar3->addWidget(emptyc);
+
+    betu = new QSpinBox;
+    betu->setValue(12);
+    betu->setMaximum(36);
+    betu->setMinimum(8);
+    QLabel *lab6 = new QLabel;
+    lab6->setText("Betű mérete: ");
+    bar3->addWidget(lab6);
+    bar3->addWidget(betu);
+
+    QWidget* emptyc2 = new QWidget();
+    emptyc2->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
+    bar3->addWidget(emptyc2);
+
+    vonalv = new QSpinBox;
+    vonalv->setValue(12);
+    vonalv->setMaximum(36);
+    vonalv->setMinimum(8);
+    QLabel *lab6b = new QLabel;
+    lab6b->setText("Vonal vastagsága: ");
+    bar3->addWidget(lab6b);
+    bar3->addWidget(vonalv);
+
+    QWidget* emptyc3 = new QWidget();
+    emptyc3->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
+    bar3->addWidget(emptyc3);
 
 }
 
@@ -1497,6 +1529,7 @@ void frmMain::gombsel01(){
         scene->gombKijelol(0);
         tbpan->setChecked(false);
         tbpont->setChecked(false);
+        tblab->setChecked(false);
 //        ui->actionK_rz->setChecked(false);
 //        ui->actionKalibr_ci->setChecked(false);
         gView->setCursor(Qt::ArrowCursor);
@@ -1521,6 +1554,7 @@ void frmMain::gombsel02(){
         scene->gombKijelol(1);
         tbpan->setChecked(false);
         tbpointer->setChecked(false);
+        tblab->setChecked(false);
 //        ui->actionK_rz->setChecked(false);
 //        ui->actionKalibr_ci->setChecked(false);
         gView->setCursor(Qt::CrossCursor);
@@ -1529,6 +1563,14 @@ void frmMain::gombsel02(){
 }
 
 void frmMain::gombsel04(){
+    if(tblab->isChecked()==true){
+        scene->gombKijelol(4);
+        tbpan->setChecked(false);
+        tbpointer->setChecked(false);
+        tbpont->setChecked(false);
+        gView->setCursor(Qt::CrossCursor);
+        gView->setDragMode(QGraphicsView::NoDrag);
+    }
 //    if(ui->actionK_rz->isChecked()==true){
 //        scene->gombKijelol(2);
 //        ui->actionMozgat_s->setChecked(false);
@@ -1547,6 +1589,7 @@ void frmMain::gombsel03(){
 //        ui->actionK_rz->setChecked(false);
 //        ui->actionKalibr_ci->setChecked(false);
         tbpointer->setChecked(false);
+        tblab->setChecked(false);
         gView->setDragMode(QGraphicsView::ScrollHandDrag);
     }
 }

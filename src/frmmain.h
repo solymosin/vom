@@ -36,8 +36,10 @@ public:
     QToolButton* tbpan;
     QToolButton* tbpointer;
     QToolButton* tbpont;
+    QToolButton* tblab;
     QComboBox *cb;
     QSpinBox *betu;
+    QSpinBox *vonalv;
 
 
 protected:
