@@ -37,5 +37,8 @@
         <file>figs/Freemasonry.png</file>
         <file>figs/Freemasonryb.png</file>
         <file>figs/label-icon.png</file>
+        <file>figs/Color-palette-icon.png</file>
+        <file>figs/Fonts-icon.png</file>
+        <file>figs/Editing-Line-Width-icon.png</file>
     </qresource>
 </RCC>

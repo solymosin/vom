@@ -3,17 +3,20 @@
 
 #include "kor.h"
 
-kor::kor(QGraphicsItem *parent): QGraphicsPolygonItem(parent){
-    QRectF rect(-30.0, -30.0, 60.0, 60.0);
+kor::kor(double w, QColor c, QGraphicsItem *parent): QGraphicsPolygonItem(parent){
+    QRectF rect(-300.0, -300.0, 600.0, 600.0);
 
     QGraphicsEllipseItem *m_ellipse;
     m_ellipse = new QGraphicsEllipseItem(rect);
-
     setPolygon(m_ellipse->shape().toFillPolygon());
-    setFlag(QGraphicsItem::ItemIsMovable, true);
 
+    setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
-    setPen(QPen(Qt::yellow, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    QPen zz;
+    zz.setColor(c);
+    zz.setWidthF(w);
+    zz.setCapStyle(Qt::FlatCap);
+    zz.setJoinStyle(Qt::RoundJoin);
+    setPen(zz);
     setOpacity(0.6);
 }
-

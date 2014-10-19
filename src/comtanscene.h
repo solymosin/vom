@@ -31,12 +31,12 @@ public:
 public slots:
     void gombKijelol(int i);
     void readPixDist(double dist);
-    void addKor(double x, double y, qreal s, QString d);
-    void addKorB(double x, double y, qreal s);
+    //void addKor(double x, double y, qreal s, QString d);
+    void addKorB(double x, double y, qreal s, double w, QColor c, double ptx);
     void addPont(double x, double y, QString d);
     void addPontB(double x, double y);
-    void addVonalB(double x1, double y1, double x2, double y2, QColor qc);
-    void setVonal();
+    void addVonalB(double x1, double y1, double x2, double y2, QColor qc, double w);
+    //void setVonal();
 
 signals:
     void itemInserted(node *item);

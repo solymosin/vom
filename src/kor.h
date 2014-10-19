@@ -5,11 +5,10 @@
 
 class kor : public QGraphicsPolygonItem {
 public:
-    kor(QGraphicsItem *parent = 0);
+    kor(double w, QColor c, QGraphicsItem *parent = 0);
     QString nev;
 };
 
 #endif // KOR_H
-
 
 

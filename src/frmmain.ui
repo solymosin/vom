@@ -68,9 +68,6 @@
    <addaction name="actionT_rolt_felv_telek"/>
    <addaction name="actionMent_s_PDF_k_nt"/>
    <addaction name="separator"/>
-   <addaction name="separator"/>
-   <addaction name="separator"/>
-   <addaction name="separator"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionKil_p">
@@ -103,6 +100,9 @@
    <property name="text">
     <string>Mentés adatbázisba</string>
    </property>
+   <property name="visible">
+    <bool>false</bool>
+   </property>
   </action>
   <action name="actionMent_s_PDF_k_nt">
    <property name="icon">
@@ -123,6 +123,9 @@
    </property>
    <property name="text">
     <string>Tárolt felvételek</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
    </property>
   </action>
   <action name="actionK_perny_ment_se">

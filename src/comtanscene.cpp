@@ -27,17 +27,17 @@ void comtanScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent){
             emit itemInserted(nod);
             break;
         case 2:
-            circ = new kor();
-            circ->setData(0,"circle");
-            addItem(circ);
-            circ->setPos(mouseEvent->scenePos());
-            emit itemInserted2(circ);
+//            circ = new kor(20, Qt::yellow);
+//            circ->setData(0,"circle");
+//            addItem(circ);
+//            circ->setPos(mouseEvent->scenePos());
+//            emit itemInserted2(circ);
             break;
         case 3:
-            vonal = new QGraphicsLineItem(QLineF(mouseEvent->scenePos(), mouseEvent->scenePos()));
-            vonal->setPen(QPen(Qt::yellow, 2));
-            addItem(vonal);
-            emit itemInsertedV(vonal);
+//            vonal = new QGraphicsLineItem(QLineF(mouseEvent->scenePos(), mouseEvent->scenePos()));
+//            vonal->setPen(QPen(Qt::yellow, 2));
+//            addItem(vonal);
+//            emit itemInsertedV(vonal);
             break;
         case 4:
             lab = new QGraphicsTextItem("ide írj valamit");
@@ -55,27 +55,28 @@ void comtanScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent){
     QGraphicsScene::mousePressEvent(mouseEvent);
 }
 
-void comtanScene::addKor(double x, double y, qreal s, QString d){
-    circ = new kor();
-    circ->setData(0,"circle");
-    circ->setData(1, d);
-    addItem(circ);
-    circ->setPos(x,y);
-    circ->setScale(s);
-    if(d=="TibiaCirc"){
-        QPen pen(Qt::red, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-        circ->setPen(pen);
-    }
-    emit itemInserted2(circ);
-}
+//void comtanScene::addKor(double x, double y, qreal s, QString d){
+//    circ = new kor(1, Qt::yellow);
+//    circ->setData(0,"circle");
+//    circ->setData(1, d);
+//    addItem(circ);
+//    circ->setPos(x,y);
+//    circ->setScale(s);
+//    if(d=="TibiaCirc"){
+//        QPen pen(Qt::red, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+//        circ->setPen(pen);
+//    }
+//    emit itemInserted2(circ);
+//}
 
-void comtanScene::addKorB(double x, double y, qreal s){
-    circ = new kor();
-    circ->setData(0,"circle");
+void comtanScene::addKorB(double x, double y, qreal s, double w, QColor c, double ptx){
+    circ = new kor(w, c);
+    circ->setData(0, "circle");
     addItem(circ);
-    circ->setPos(x,y);
-    circ->setScale(1);
-    circ->update(x,y,s,s);
+    circ->setPos(x, y);
+    double u = circ->shape().boundingRect().width()-1;
+    circ->setScale((ptx/u)*2);
+    circ->update(x, y, s, s);
     emit itemInserted2(circ);
 }
 
@@ -99,7 +100,7 @@ void comtanScene::addPontB(double x, double y){
     emit itemInserted(nod);
 }
 
-void comtanScene::addVonalB(double x1, double y1, double x2, double y2, QColor qc){
+void comtanScene::addVonalB(double x1, double y1, double x2, double y2, QColor qc, double w){
     if (x1<x2){
         vo = new vonalB(x1, y1, x2, y2);
         addItem(vo);
@@ -112,16 +113,16 @@ void comtanScene::addVonalB(double x1, double y1, double x2, double y2, QColor q
 //    nod->setData(0,"pont");
     //addItem(vo);
     //vo->setLine(x1, y1, x2, y2);
-    QPen pen(qc, 1.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+    QPen pen(qc, w, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
     vo->setPen(pen);
     emit itemInserted3(vo);
 }
 
-void comtanScene::setVonal(){
-    QGraphicsLineItem *l = qgraphicsitem_cast<QGraphicsLineItem *>(selectedItems().first());
-    QPen pen(Qt::red, 2.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-    l->setPen(pen);
-}
+//void comtanScene::setVonal(){
+//    QGraphicsLineItem *l = qgraphicsitem_cast<QGraphicsLineItem *>(selectedItems().first());
+//    QPen pen(Qt::red, 2.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+//    l->setPen(pen);
+//}
 
 
 

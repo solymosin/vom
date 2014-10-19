@@ -37,9 +37,14 @@ public:
     QToolButton* tbpointer;
     QToolButton* tbpont;
     QToolButton* tblab;
+    QToolButton* tbcol;
+    QToolButton* tbfont;
     QComboBox *cb;
     QSpinBox *betu;
-    QSpinBox *vonalv;
+    QDoubleSpinBox *vonalv;
+    QColor *actcolorV;
+    QColor *actcolorF;
+    QFont *actFont;
 
 
 protected:
@@ -48,37 +53,37 @@ protected:
 private slots:
     void nevjegy();
     void loadRTG();
-    void addRTGtoDB();
-    void editRTGtoDB();
-    void saveRTGtoDB();
-    void listDB();
+    //void addRTGtoDB();
+    //void editRTGtoDB();
+    //void saveRTGtoDB();
+    //void listDB();
     void iZoom(const double &oS);
     void iZoomb(const double &oS);
     void hZoomP();
     void hZoomM();
 
     void torol();
-    void selFemurCirc();
-    void selTibiaCirc();
-    void selPatellaPoint();
-    void selTibiaPoint();
-    void selTibiaPlatoPoints();
-    void selFureszCirc();
+//    void selFemurCirc();
+//    void selTibiaCirc();
+//    void selPatellaPoint();
+//    void selTibiaPoint();
+//    void selTibiaPlatoPoints();
+//    void selFureszCirc();
     void gombsel01();
     void gombsel02();
     void gombsel03();
     void gombsel04();
     void gombsel05();
-    void calccTTA();
-    void calcTTA();
+//    void calccTTA();
+//    void calcTTA();
     void exportPDF();
     void melyikelem(int i);
     void skala();
-    void fureszSkala(QString s);
+    //void fureszSkala(QString s);
     void readSkala();
     void mirror();
 //    void rajz();
-    void help();
+    //void help();
 
     void korkozepe();
     void pontosszekoto();
@@ -94,7 +99,10 @@ private slots:
     void rotate();
     void rotater();
     void save();
-    void szinez();
+    void szinezo();
+    void betuzo();
+    void vonalW();
+    void mySettings();
 
 };
 
