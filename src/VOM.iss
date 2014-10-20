@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "VOM"
-#define MyAppVersion "0.93"
+#define MyAppVersion "0.97"
 #define MyAppPublisher "Solymosi Norbert"
 #define MyAppURL "http://www.univet.hu/"
 #define MyAppExeName "VOM.exe"
@@ -22,8 +22,8 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
-LicenseFile=C:\VOM5\arch\GPL3.rtf
-OutputDir=C:\VOM5\arch
+LicenseFile=C:\vom\arch\GPL3.rtf
+OutputDir=C:\vom\arch
 OutputBaseFilename=VOM_setup
 Compression=lzma
 SolidCompression=yes
@@ -37,10 +37,10 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "C:\VOM5\release\VOM.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\VOM5\db.sqlite"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\VOM5\VOM.ico"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\VOM5\arch\GPL3.rtf"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\vom\build-VOM-Desktop_Qt_5_3_MinGW_32bit-Release\release\VOM.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\vom\src\db.sqlite"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\vom\src\VOM.ico"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\vom\arch\GPL3.rtf"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Qt5\5.3\mingw482_32\bin\Qt5Core.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Qt5\5.3\mingw482_32\bin\Qt5Gui.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Qt5\5.3\mingw482_32\bin\Qt5Sql.dll"; DestDir: "{app}"; Flags: ignoreversion
