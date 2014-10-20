@@ -25,6 +25,7 @@
 #include <QFontDialog>
 #include <QDoubleSpinBox>
 #include <QToolTip>
+#include <QSettings>
 
 #include "comtanscene.h"
 #include "node.h"
@@ -124,25 +125,35 @@ frmMain::frmMain(QWidget *parent): QMainWindow(parent), ui(new Ui::frmMain){
     actcolorF = new QColor();
     actFont = new QFont();
 
-    QSettings settings(QSettings::IniFormat, QSettings::UserScope, "snas", "vom");
-    settings.beginGroup("vom");
-    if(settings.contains("actcolorV")){
+    settings = new QSettings(QSettings::IniFormat, QSettings::UserScope, "snas", "vom");
 
+    settings->beginGroup("qvom");
+    if(settings->contains("actcolorV")){
+        settings->beginGroup("actcolorV");
+        actcolorV->fromRgb(settings->value("r").toInt(), settings->value("g").toInt(), settings->value("b").toInt());
+        settings->endGroup();
     } else {
         actcolorV->setNamedColor("yellow");
     }
-    if(settings.contains("actcolorF")){
-
-    } else {
+    if(settings->contains("actcolorF")){
+        settings->beginGroup("actcolorF");
+        actcolorV->fromRgb(settings->value("r").toInt(), settings->value("g").toInt(), settings->value("b").toInt());
+        settings->endGroup();
+    } else {        
         actcolorF->setNamedColor("yellow");
     }
-    if(settings.contains("actFont")){
-
+    if(settings->contains("actFont")){
+        settings->beginGroup("actFont");
+        actFont->setFamily(settings->value("family").toString());
+        actFont->setPixelSize(settings->value("pixelSize").toInt());
+        actFont->setWeight(settings->value("weight").toInt());
+        actFont->setItalic(settings->value("italic").toBool());
+        settings->endGroup();
     } else {
         actFont->setFamily("Helvetica");
         actFont->setPointSize(12);
     }
-    settings.endGroup();
+    settings->endGroup();
 
 //    db.open();
 //    QSqlQuery query;
@@ -151,38 +162,6 @@ frmMain::frmMain(QWidget *parent): QMainWindow(parent), ui(new Ui::frmMain){
 //    db.close();
 
 //    http://qvision.sourceforge.net/index.html
-
-//    ui->comboBox->addItem("");
-//    ui->comboBox->addItem("20");
-//    ui->comboBox->addItem("24");
-//    ui->comboBox->addItem("28");
-
-    //ui->comboBox_2->addItem("");
-    //ui->comboBox_2->addItem("12");
-    //ui->comboBox_2->addItem("15");
-    //ui->comboBox_2->addItem("18");
-    //ui->comboBox_2->addItem("20");
-    //ui->comboBox_2->addItem("24");
-    //ui->comboBox_2->addItem("27");
-    //ui->comboBox_2->addItem("30");
-
-//    connect(ui->bPatellaPoint_2, SIGNAL(clicked()), this, SLOT(selPatellaPoint()));
-//    connect(ui->bTibiaPoint_2, SIGNAL(clicked()), this, SLOT(selTibiaPoint()));
-//    connect(ui->bTibiaPlato, SIGNAL(clicked()), this, SLOT(selTibiaPlatoPoints()));
-//    connect(ui->pushButton_2, SIGNAL(clicked()), this, SLOT(calcTTA()));
-//    connect(ui->bFureszCirc, SIGNAL(clicked()), this, SLOT(selFureszCirc()));
-//    connect(ui->comboBox, SIGNAL(currentIndexChanged(QString)), this, SLOT(fureszSkala(QString)));
-//    connect(ui->toolButton, SIGNAL(clicked()), this, SLOT(help()));
-//    ui->toolButton->setVisible(false);
-
-
-    //QToolBar::removeSeparators();
-
-    //ui->mainToolBar->addSeparator();
-
-    //QWidget* emptyb = new QWidget();
-    //emptyb->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
-    //ui->mainToolBar->addWidget(emptyb);
 
     QToolButton *tbcol = new QToolButton;
     tbcol->setIcon(QIcon(":/images/figs/Color-palette-icon.png"));
@@ -232,8 +211,6 @@ frmMain::frmMain(QWidget *parent): QMainWindow(parent), ui(new Ui::frmMain){
     connect(tbcal, SIGNAL(clicked()), this, SLOT(calib()));
     ui->mainToolBar->addWidget(tbcal);
 
-    //ui->mainToolBar->addSeparator();
-
     QWidget* emptya = new QWidget();
     emptya->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
     ui->mainToolBar->addWidget(emptya);
@@ -261,9 +238,6 @@ frmMain::frmMain(QWidget *parent): QMainWindow(parent), ui(new Ui::frmMain){
     tbfuresz->setToolTip("Fűrész felhelyezése");
     connect(tbfuresz, SIGNAL(clicked()), this, SLOT(furesz()));
     ui->mainToolBar->addWidget(tbfuresz);
-
-    //ui->mainToolBar->addSeparator();
-
 
     QWidget* empty = new QWidget();
     empty->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
@@ -317,18 +291,6 @@ frmMain::frmMain(QWidget *parent): QMainWindow(parent), ui(new Ui::frmMain){
 
 
     bar2->addSeparator();
-
-    //QToolButton *tbzoomin = new QToolButton;
-    //tbzoomin->setIcon(QIcon(":/images/figs/mActionZoomIn.png"));
-    //tbzoomin->setToolTip("Nagyítás");
-    //connect(tbzoomin, SIGNAL(clicked()), this, SLOT(hZoomP()));
-    //bar2->addWidget(tbzoomin);
-
-    //QToolButton *tbzoomout = new QToolButton;
-    //tbzoomout->setIcon(QIcon(":/images/figs/mActionZoomOut.png"));
-    //tbzoomout->setToolTip("Kicsinyítés");
-    //connect(tbzoomout, SIGNAL(clicked()), this, SLOT(hZoomM()));
-    //bar2->addWidget(tbzoomout);
 
     QToolButton *tbmirror = new QToolButton;
     tbmirror->setIcon(QIcon(":/images/figs/Actions-object-flip-horizontal-icon.png"));
@@ -395,61 +357,6 @@ frmMain::frmMain(QWidget *parent): QMainWindow(parent), ui(new Ui::frmMain){
     connect(tbszog, SIGNAL(clicked()), this, SLOT(szogmero()));
     bar2->addWidget(tbszog);
 
-//    /*3. toolbar*/
-
-//    QToolBar *bar3 = new QToolBar;
-//    bar3->setOrientation(Qt::Horizontal);
-//    bar3->setAllowedAreas(Qt::BottomToolBarArea);
-//    addToolBar(Qt::BottomToolBarArea, bar3);
-
-//    QLabel *lab5 = new QLabel;
-//    lab5->setText("Szín: ");
-//    bar3->addWidget(lab5);
-
-//    //http://www.qtcentre.org/threads/19916-Color-ComboBox
-//    cb = new QComboBox(this);
-//    const QStringList colorNames = QColor::colorNames();
-//    int index = 0;
-//    foreach (const QString &colorName, colorNames) {
-//        const QColor color(colorName);
-//        cb->addItem(colorName, color);
-//        const QModelIndex idx = cb->model()->index(index++, 0);
-//        cb->model()->setData(idx, color, Qt::BackgroundColorRole);
-//    }
-//    cb->setCurrentText("yellow");
-//    connect(cb, SIGNAL(currentIndexChanged(QString)), this, SLOT(szinez()));
-//    bar3->addWidget(cb);
-
-//    QWidget* emptyc = new QWidget();
-//    emptyc->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
-//    bar3->addWidget(emptyc);
-
-//    betu = new QSpinBox;
-//    betu->setValue(12);
-//    betu->setMaximum(36);
-//    betu->setMinimum(8);
-//    QLabel *lab6 = new QLabel;
-//    lab6->setText("Betű mérete: ");
-//    bar3->addWidget(lab6);
-//    bar3->addWidget(betu);
-
-//    QWidget* emptyc2 = new QWidget();
-//    emptyc2->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
-//    bar3->addWidget(emptyc2);
-
-//    vonalv = new QSpinBox;
-//    vonalv->setValue(12);
-//    vonalv->setMaximum(36);
-//    vonalv->setMinimum(8);
-//    QLabel *lab6b = new QLabel;
-//    lab6b->setText("Vonal vastagsága: ");
-//    bar3->addWidget(lab6b);
-//    bar3->addWidget(vonalv);
-
-//    QWidget* emptyc3 = new QWidget();
-//    emptyc3->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
-//    bar3->addWidget(emptyc3);
-
 }
 
 frmMain::~frmMain(){
@@ -457,51 +364,32 @@ frmMain::~frmMain(){
 }
 
 
-void frmMain::mySettings(){
-//    settingWizard *dlg = new settingWizard();
+void frmMain::saveSettings(){
 
-//    QSettings settings(QSettings::IniFormat, QSettings::UserScope, "vetracto", "qvtr");
+    settings->beginGroup("qvom");
 
-//    settings.beginGroup("vtr");
-//    settings.beginGroup("rendelo");
-//    QString kulcs = "neve";
-//    if(settings.contains(kulcs)){
-//        dlg->ui->lineEdit->setText(settings.value(kulcs).toString());
-//    }
-//    kulcs = "cime";
-//    if(settings.contains(kulcs)){
-//        dlg->ui->lineEdit_2->setText(settings.value(kulcs).toString());
-//    }
-//    kulcs = "www";
-//    if(settings.contains(kulcs)){
-//        dlg->ui->lineEdit_3->setText(settings.value(kulcs).toString());
-//    }
-//    settings.endGroup();
-//    settings.beginGroup("program");
-//    kulcs = "kezelnapok";
-//    if(settings.contains(kulcs)){
-//        dlg->ui->spinBox->setValue(settings.value(kulcs).toInt());
-//    } else {
-//        dlg->ui->spinBox->setValue(10);
-//    }
-//    settings.endGroup();
-//    settings.endGroup();
+    settings->beginGroup("actcolorV");
+    settings->setValue("r", actcolorV->toRgb().red());
+    settings->setValue("g", actcolorV->toRgb().green());
+    settings->setValue("b", actcolorV->toRgb().blue());
+    settings->endGroup();
 
-//    if (dlg->exec() == QDialog::Accepted ){
-//        settings.beginGroup("vtr");
-//        settings.beginGroup("rendelo");
-//        settings.setValue("neve", dlg->ui->lineEdit->text());
-//        settings.setValue("cime", dlg->ui->lineEdit_2->text());
-//        settings.setValue("www",  dlg->ui->lineEdit_3->text());
-//        settings.endGroup();
-//        settings.beginGroup("program");
-//        settings.setValue("kezelnapok", dlg->ui->spinBox->value());
-//        settings.endGroup();
-//        settings.endGroup();
+    settings->beginGroup("actcolorF");
+    settings->setValue("r", actcolorF->toRgb().red());
+    settings->setValue("g", actcolorF->toRgb().green());
+    settings->setValue("b", actcolorF->toRgb().blue());
+    settings->endGroup();
 
-//        kezelnapok = dlg->ui->spinBox->value();
-//        betolt01();
-//    }
+    settings->beginGroup("actFont");
+    settings->setValue("family", actFont->family());
+    settings->setValue("pixelSize", actFont->pixelSize());
+    settings->setValue("weight", actFont->weight());
+    settings->setValue("italic", actFont->italic());
+    settings->endGroup();
+
+    settings->endGroup();
+
+    settings->sync();
 }
 
 void frmMain::vonalW(){
@@ -540,7 +428,9 @@ void frmMain::betuzo(){
         actFont->setPixelSize(font.pixelSize());
         //actFont->setBold(font.bold());
         actFont->setWeight(font.weight());
-        actFont->setItalic(font.italic());
+        actFont->setItalic(font.italic());        
+        /**/
+        saveSettings();
     }
 }
 
@@ -570,6 +460,7 @@ void frmMain::szinezo(){
                 actcolorF = new QColor(color);
             }
         }
+    saveSettings();
     }
 }
 

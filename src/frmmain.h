@@ -9,6 +9,7 @@
 #include <QComboBox>
 #include <QDoubleSpinBox>
 #include <QToolButton>
+#include <QSettings>
 
 #include "mgview.h"
 #include "comtanscene.h"
@@ -45,7 +46,7 @@ public:
     QColor *actcolorV;
     QColor *actcolorF;
     QFont *actFont;
-
+    QSettings *settings;
 
 protected:
     void changeEvent(QEvent *e);
@@ -102,7 +103,7 @@ private slots:
     void szinezo();
     void betuzo();
     void vonalW();
-    void mySettings();
+    void saveSettings();
 
 };
 
