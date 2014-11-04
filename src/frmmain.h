@@ -47,6 +47,7 @@ public:
     QColor *actcolorF;
     QFont *actFont;
     QSettings *settings;
+    QSpinBox *deg;
 
 protected:
     void changeEvent(QEvent *e);

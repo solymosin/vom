@@ -107,7 +107,7 @@
   <action name="actionMent_s_PDF_k_nt">
    <property name="icon">
     <iconset resource="figs.qrc">
-     <normaloff>:/images/figs/mActionFilePrint.png</normaloff>:/images/figs/mActionFilePrint.png</iconset>
+     <normaloff>:/images/figs/save.png</normaloff>:/images/figs/save.png</iconset>
    </property>
    <property name="text">
     <string>Mentés képként</string>

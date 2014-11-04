@@ -45,7 +45,7 @@
 frmMain::frmMain(QWidget *parent): QMainWindow(parent), ui(new Ui::frmMain){
     ui->setupUi(this);    
 
-    QApplication::setApplicationVersion("0.97");
+    QApplication::setApplicationVersion("0.98");
 
     /*kozepre teszi a nyito kepernyot*/
     QRect available_geom = QDesktopWidget().availableGeometry();
@@ -331,11 +331,22 @@ frmMain::frmMain(QWidget *parent): QMainWindow(parent), ui(new Ui::frmMain){
     connect(tbkeresztezo, SIGNAL(clicked()), this, SLOT(keresztezo()));
     bar2->addWidget(tbkeresztezo);
 
+    bar2->addSeparator();
+
     QToolButton *tbderek = new QToolButton;
     tbderek->setIcon(QIcon(":/images/figs/Triangle-ruler-icon.png"));
-    tbderek->setToolTip("Derékszöget bezáró egyenes");
+    tbderek->setToolTip("Szöget bezáró egyenes");
     connect(tbderek, SIGNAL(clicked()), this, SLOT(derekas()));
     bar2->addWidget(tbderek);
+
+    deg = new QSpinBox;
+    deg->setValue(90);
+    deg->setMaximum(180);
+    deg->setMinimum(0);
+    deg->setSingleStep(1);
+    bar2->addWidget(deg);
+
+    bar2->addSeparator();
 
     QToolButton *tbhosszabb = new QToolButton;
     tbhosszabb->setIcon(QIcon(":/images/figs/resize-diag-1-icon.png"));
@@ -609,48 +620,86 @@ void frmMain::hossza(){
 
 
 void frmMain::derekas(){
-    int s = 0;
-    foreach (QGraphicsItem *item, scene->selectedItems()) {
-        s = s+item->type();
-    }
-    if (scene->selectedItems().count()!=2 or s!=11){
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Information);
-        msgBox.setText("Figyelmezzünk!");
-        msgBox.setInformativeText("Pontosan 1 egyenest 1 pontot kell kijelölni");
-        msgBox.exec();
-    } else {
-        QLineF l1;
-        QPointF pont;
+    if(deg->value()==90){
+        int s = 0;
         foreach (QGraphicsItem *item, scene->selectedItems()) {
-            if(item->type()==6){
-                QGraphicsLineItem *vonal = qgraphicsitem_cast<QGraphicsLineItem *>(item);
-                l1.setP1(vonal->line().p1());
-                l1.setP2(vonal->line().p2());
-            } else {
-                pont.setX(item->x());
-                pont.setY(item->y());
-            }
+            s = s+item->type();
         }
-        QPointF A;
-        QPointF B;
-        A = l1.p1();
-        B = l1.p2();
+        if (scene->selectedItems().count()!=2 or s!=11){
+            QMessageBox msgBox;
+            msgBox.setIcon(QMessageBox::Information);
+            msgBox.setText("Figyelmezzünk!");
+            msgBox.setInformativeText("Pontosan 1 egyenest és 1 pontot kell kijelölni");
+            msgBox.exec();
+        } else {
+            QLineF l1;
+            QPointF pont;
+            foreach (QGraphicsItem *item, scene->selectedItems()) {
+                if(item->type()==6){
+                    QGraphicsLineItem *vonal = qgraphicsitem_cast<QGraphicsLineItem *>(item);
+                    l1.setP1(vonal->line().p1());
+                    l1.setP2(vonal->line().p2());
+                } else {
+                    pont.setX(item->x());
+                    pont.setY(item->y());
+                }
+            }
+            QPointF A;
+            QPointF B;
+            A = l1.p1();
+            B = l1.p2();
 
-//        http://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
-        double nl = sqrt((B.x()-A.x())*(B.x()-A.x())+(B.y()-A.y())*(B.y()-A.y()));
-        double tav = ((pont.x()-A.x())*(B.y()-A.y())-(pont.y()-A.y())*(B.x()-A.x()))/nl;
+    //        http://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
+            double nl = sqrt((B.x()-A.x())*(B.x()-A.x())+(B.y()-A.y())*(B.y()-A.y()));
+            double tav = ((pont.x()-A.x())*(B.y()-A.y())-(pont.y()-A.y())*(B.x()-A.x()))/nl;
 
-        QLineF lb(l1.p1().x(), l1.p1().y(), l1.p2().x(), l1.p2().y());
+            QLineF lb(l1.p1().x(), l1.p1().y(), l1.p2().x(), l1.p2().y());
 
-        double c = sqrt(pow(l1.p1().x()-pont.x(),2)+pow(l1.p1().y()-pont.y(),2));
+            double c = sqrt(pow(l1.p1().x()-pont.x(),2)+pow(l1.p1().y()-pont.y(),2));
 
-        double b = sqrt(pow(c,2)-pow(tav,2));
-        lb.setLength(b);
-        QLineF l5(pont.x(), pont.y(), lb.p2().x(), lb.p2().y());
+            double b = sqrt(pow(c,2)-pow(tav,2));
+            lb.setLength(b);
+            QLineF l5(pont.x(), pont.y(), lb.p2().x(), lb.p2().y());
 
+            scene->addVonalB(l5.p1().x(), l5.p1().y(), l5.p2().x(), l5.p2().y(), actcolorV->toRgb(), vonalv->value());
+        }
+    } else {
+        int s = 0;
+        foreach (QGraphicsItem *item, scene->selectedItems()) {
+            s = s+item->type();
+        }
+        if (scene->selectedItems().count()!=1 or s!=6){
+            QMessageBox msgBox;
+            msgBox.setIcon(QMessageBox::Information);
+            msgBox.setText("Figyelmezzünk!");
+            msgBox.setInformativeText("Pontosan 1 egyenest kell kijelölni");
+            msgBox.exec();
+        } else {
+            QLineF l1;
+            QPointF pont;
+            foreach (QGraphicsItem *item, scene->selectedItems()) {
+                if(item->type()==6){
+                    QGraphicsLineItem *vonal = qgraphicsitem_cast<QGraphicsLineItem *>(item);
+                    l1.setP1(vonal->line().p1());
+                    l1.setP2(vonal->line().p2());
+                } else {
+                    pont.setX(item->x());
+                    pont.setY(item->y());
+                }
+            }
+            QPointF K;
+            QLineF la(l1.p1().x(), l1.p1().y(), pont.x(), pont.y());
+            QLineF lb(l1.p2().x(), l1.p2().y(), pont.x(), pont.y());
+            if(la.length()>lb.length()){
+                K = l1.p2();
+            } else {
+                K = l1.p1();
+            }
+            QLineF lc(l1.p1().x(), l1.p1().y(), l1.p2().x(), l1.p2().y());
+            lc.setAngle(l1.angle()+deg->value());
 
-        scene->addVonalB(l5.p1().x(), l5.p1().y(), l5.p2().x(), l5.p2().y(), actcolorV->toRgb(), vonalv->value());
+            scene->addVonalB(lc.p1().x(), lc.p1().y(), lc.p2().x(), lc.p2().y(), actcolorV->toRgb(), vonalv->value());
+        }
     }
 }
 
