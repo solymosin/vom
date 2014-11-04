@@ -182,6 +182,7 @@ frmMain::frmMain(QWidget *parent): QMainWindow(parent), ui(new Ui::frmMain){
     vonalv->setMaximum(8);
     vonalv->setMinimum(0.5);
     vonalv->setSingleStep(0.1);
+    vonalv->setAlignment(Qt::AlignRight);
     vonalv->setToolTip("Vonal vastagsága pixelben");
     connect(vonalv, SIGNAL(valueChanged(double)), this, SLOT(vonalW()));
     ui->mainToolBar->addWidget(labline);
@@ -197,6 +198,7 @@ frmMain::frmMain(QWidget *parent): QMainWindow(parent), ui(new Ui::frmMain){
     mertek->setDecimals(1);
     mertek->setMinimum(0);
     mertek->setMaximum(200);
+    mertek->setAlignment(Qt::AlignRight);
     QLabel *lab3 = new QLabel;
     lab3->setText("Kijelölt egyenes: ");
     ui->mainToolBar->addWidget(lab3);
@@ -255,10 +257,16 @@ frmMain::frmMain(QWidget *parent): QMainWindow(parent), ui(new Ui::frmMain){
 
     /*2. toolbar*/
 
+    //QToolBar *bar2 = new QToolBar;
+    //bar2->setOrientation(Qt::Vertical);
+    //bar2->setAllowedAreas(Qt::LeftToolBarArea | Qt::RightToolBarArea);
+    //addToolBar(Qt::LeftToolBarArea, bar2);
+
     QToolBar *bar2 = new QToolBar;
     bar2->setOrientation(Qt::Vertical);
-    bar2->setAllowedAreas(Qt::LeftToolBarArea | Qt::RightToolBarArea);
-    addToolBar(Qt::LeftToolBarArea, bar2);
+    bar2->setAllowedAreas(Qt::LeftToolBarArea | Qt::RightToolBarArea | Qt::BottomToolBarArea | Qt::TopToolBarArea);
+    addToolBar(Qt::BottomToolBarArea, bar2);
+
 
     tbpan = new QToolButton;
     tbpan->setIcon(QIcon(":/images/figs/pan.png"));
@@ -333,18 +341,21 @@ frmMain::frmMain(QWidget *parent): QMainWindow(parent), ui(new Ui::frmMain){
 
     bar2->addSeparator();
 
+    deg = new QSpinBox;
+    deg->setValue(90);
+    deg->setMaximum(360);
+    deg->setMinimum(0);
+    deg->setSingleStep(1);
+    deg->setSuffix("°");
+    deg->setAlignment(Qt::AlignRight);
+    deg->setToolTip("Hány fokot zárjon be a két egyenes? 90 fok esetén egy egyenest és egy pontot kell kijelölni. Ettől eltérő esetben csak egy egyenest.");
+    bar2->addWidget(deg);
+
     QToolButton *tbderek = new QToolButton;
     tbderek->setIcon(QIcon(":/images/figs/Triangle-ruler-icon.png"));
     tbderek->setToolTip("Szöget bezáró egyenes");
     connect(tbderek, SIGNAL(clicked()), this, SLOT(derekas()));
     bar2->addWidget(tbderek);
-
-    deg = new QSpinBox;
-    deg->setValue(90);
-    deg->setMaximum(180);
-    deg->setMinimum(0);
-    deg->setSingleStep(1);
-    bar2->addWidget(deg);
 
     bar2->addSeparator();
 
@@ -676,24 +687,12 @@ void frmMain::derekas(){
             msgBox.exec();
         } else {
             QLineF l1;
-            QPointF pont;
             foreach (QGraphicsItem *item, scene->selectedItems()) {
                 if(item->type()==6){
                     QGraphicsLineItem *vonal = qgraphicsitem_cast<QGraphicsLineItem *>(item);
                     l1.setP1(vonal->line().p1());
                     l1.setP2(vonal->line().p2());
-                } else {
-                    pont.setX(item->x());
-                    pont.setY(item->y());
                 }
-            }
-            QPointF K;
-            QLineF la(l1.p1().x(), l1.p1().y(), pont.x(), pont.y());
-            QLineF lb(l1.p2().x(), l1.p2().y(), pont.x(), pont.y());
-            if(la.length()>lb.length()){
-                K = l1.p2();
-            } else {
-                K = l1.p1();
             }
             QLineF lc(l1.p1().x(), l1.p1().y(), l1.p2().x(), l1.p2().y());
             lc.setAngle(l1.angle()+deg->value());
