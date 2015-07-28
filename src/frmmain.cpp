@@ -45,7 +45,7 @@
 frmMain::frmMain(QWidget *parent): QMainWindow(parent), ui(new Ui::frmMain){
     ui->setupUi(this);    
 
-    QApplication::setApplicationVersion("0.98");
+    QApplication::setApplicationVersion("0.992");
 
     /*kozepre teszi a nyito kepernyot*/
     QRect available_geom = QDesktopWidget().availableGeometry();
@@ -306,17 +306,28 @@ frmMain::frmMain(QWidget *parent): QMainWindow(parent), ui(new Ui::frmMain){
     connect(tbmirror, SIGNAL(clicked()), this, SLOT(mirror()));
     bar2->addWidget(tbmirror);
 
-    QToolButton *tbrotate = new QToolButton;
-    tbrotate->setIcon(QIcon(":/images/figs/Editing-Rotation-Cw-icon.png"));
-    tbrotate->setToolTip("Forgatás");
-    connect(tbrotate, SIGNAL(clicked()), this, SLOT(rotate()));
-    bar2->addWidget(tbrotate);
+//    QToolButton *tbrotate = new QToolButton;
+//    tbrotate->setIcon(QIcon(":/images/figs/Editing-Rotation-Cw-icon.png"));
+//    tbrotate->setToolTip("Forgatás");
+//    connect(tbrotate, SIGNAL(clicked()), this, SLOT(rotate()));
+//    bar2->addWidget(tbrotate);
 
+    rot = new QSpinBox;
+    rot->setValue(0);
+    rot->setMaximum(180);
+    rot->setMinimum(-180);
+    rot->setSingleStep(1);
+    rot->setSuffix("°");
+    rot->setAlignment(Qt::AlignRight);
+    rot->setToolTip("Objektum elfordításának szöge");
+    //rot->setButtonSymbols(QAbstractSpinBox::NoButtons);
+    //connect(rot, SIGNAL(valueChanged(int)), this, SLOT(rotatO()));
+    bar2->addWidget(rot);
 
     QToolButton *tbrotater = new QToolButton;
-    tbrotater->setIcon(QIcon(":/images/figs/Editing-Rotation-Ccw-icon.png"));
-    tbrotater->setToolTip("Forgatás viszza");
-    connect(tbrotater, SIGNAL(clicked()), this, SLOT(rotater()));
+    tbrotater->setIcon(QIcon(":/images/figs/Editing-Rotation-Cw-icon.png"));
+    tbrotater->setToolTip("Forgatás");
+    connect(tbrotater, SIGNAL(clicked()), this, SLOT(rotatO()));
     bar2->addWidget(tbrotater);
 
     bar2->addSeparator();
@@ -330,6 +341,14 @@ frmMain::frmMain(QWidget *parent): QMainWindow(parent), ui(new Ui::frmMain){
     QToolButton *tbcircentr = new QToolButton;
     tbcircentr->setIcon(QIcon(":/images/figs/App-Adobe-Acrobat-Reader-icon.png"));
     tbcircentr->setToolTip("Köréírt kör középpontja");
+    kortis = false;
+    subact = new QAction("Rajzoljon kört is", this);
+    subact->setCheckable(true);
+    subact->setChecked(kortis);
+    connect(subact, SIGNAL(triggered(bool)), this, SLOT(setKortis()));
+    QMenu *xmenu = new QMenu();
+    xmenu->addAction(subact);
+    tbcircentr->setMenu(xmenu);
     connect(tbcircentr, SIGNAL(clicked()), this, SLOT(korkozepe()));
     bar2->addWidget(tbcircentr);
 
@@ -379,10 +398,105 @@ frmMain::frmMain(QWidget *parent): QMainWindow(parent), ui(new Ui::frmMain){
     connect(tbszog, SIGNAL(clicked()), this, SLOT(szogmero()));
     bar2->addWidget(tbszog);
 
+    //bar2->addSeparator();
+
+    //rot = new QSpinBox;
+    //rot->setValue(0);
+    //rot->setMaximum(180);
+    //rot->setMinimum(-180);
+    //rot->setSingleStep(1);
+    //rot->setSuffix("°");
+    //rot->setAlignment(Qt::AlignRight);
+    //rot->setToolTip("Objektum elfordításának szöge");
+    ////rot->setButtonSymbols(QAbstractSpinBox::NoButtons);
+    //connect(rot, SIGNAL(valueChanged(int)), this, SLOT(rotatO()));
+    //bar2->addWidget(rot);
+
+
 }
 
 frmMain::~frmMain(){
     delete ui;
+}
+
+
+void frmMain::setKortis(){
+    kortis = subact->isChecked();
+    //qDebug() << kortis;
+}
+
+
+void frmMain::rotatO(){
+    int tip = 0;
+    if(scene->selectedItems().count()==0){
+        gView->rotate(rot->value());
+    } else {
+        foreach (QGraphicsItem *item, scene->selectedItems()) {
+            tip = item->type();
+            if (tip==6){
+                QGraphicsLineItem *lrot = qgraphicsitem_cast<QGraphicsLineItem *>(item);
+
+                //https://forum.qt.io/topic/17097/sample-code-for-rotating/4
+
+                double Pi = 3.14159265358979323846264338327950288419717;
+                double rotAngle = -1*rot->value() * (Pi / 180.0);
+                double sinAngle = qSin(rotAngle);
+                double cosAngle = qCos(rotAngle);
+
+                int px = lrot->line().p1().x() - lrot->boundingRect().center().x();
+                int py = lrot->line().p1().y() - lrot->boundingRect().center().y();
+
+                float xnew = px * cosAngle + py * sinAngle;
+                float ynew = py * cosAngle - px * sinAngle;
+
+                qreal p1x = xnew + lrot->boundingRect().center().x();
+                qreal p1y = ynew + lrot->boundingRect().center().y();
+
+                px = lrot->line().p2().x() - lrot->boundingRect().center().x();
+                py = lrot->line().p2().y() - lrot->boundingRect().center().y();
+
+                xnew = px * cosAngle + py * sinAngle;
+                ynew = py * cosAngle - px * sinAngle;
+
+                qreal p2x = xnew + lrot->boundingRect().center().x();
+                qreal p2y = ynew + lrot->boundingRect().center().y();
+
+                scene->removeItem(scene->selectedItems().first());
+                scene->addVonalB(p1x, p1y, p2x, p2y, actcolorV->toRgb(), vonalv->value());
+
+                //lrot->prepareGeometryChange();
+                //lrot->line().setLine(p1x, p1y, p2x, p2y);
+                //lrot->setRotation(rot->value());
+
+                //scene->selectedItems().first()->
+
+                //l->line().p1().setX(p1x);
+                //l->line().p1().setY(p1y);
+                //l->line().p2().setX(p2x);
+                //l->line().p2().setY(p2y);
+                //lrot->update();
+                //scene->update();
+
+                //qDebug() << lrot->line().p1().x();
+
+            }
+            if (tip==5){
+                QGraphicsPolygonItem *l = qgraphicsitem_cast<QGraphicsPolygonItem *>(item);
+                l->setRotation(rot->value());
+            }
+        }
+        //if(tip==6){
+        //    QGraphicsItem *it;
+      //      foreach (it, scene->items()) {
+    //
+            //}
+            //it->setSelected(true);
+            //scene->items.at(scene->items().count()-1)->setSelected(true);
+            //scene->items().at(scene->items().count()-1)->setSelected(true);
+            //scene->update();
+        //scene->items().end()
+        //}
+    }
 }
 
 
@@ -488,7 +602,8 @@ void frmMain::szinezo(){
 
 
 void frmMain::rotater(){
-    gView->rotate(-5);
+    //gView->rotate(-5);
+    gView->rotate(rot->value());
 }
 
 void frmMain::rotate(){
@@ -816,6 +931,11 @@ void frmMain::korkozepe(){
 
         double xc=bx/(2*aa);
         double yc=by/(2*aa);
+
+        if(kortis==true){
+            QLineF dist(xc, yc, xs.at(0), ys.at(0));
+            scene->addKor(xc, yc, dist.length(), vonalv->value(), actcolorV->toRgb());
+        }
 
         scene->addPontB(xc, yc);
     }
@@ -1745,6 +1865,9 @@ void frmMain::save(){
             image.fill(Qt::transparent);
             QPainter painter(&image);
             gView->scene()->render(&painter);
+            int dpm = 300 / 0.0254; // ~300 DPI
+            image.setDotsPerMeterX(dpm);
+            image.setDotsPerMeterY(dpm);
             image.save(fileName, "JPEG", 100);
         }
         if (ft=="*.png"){
@@ -1754,6 +1877,9 @@ void frmMain::save(){
             image.fill(Qt::transparent);
             QPainter painter(&image);
             gView->scene()->render(&painter);
+            int dpm = 300 / 0.0254; // ~300 DPI
+            image.setDotsPerMeterX(dpm);
+            image.setDotsPerMeterY(dpm);
             image.save(fileName, "PNG", 100);
         }
     }
@@ -1799,14 +1925,15 @@ void frmMain::exportPDF(){
     QPixmap pixMap = gView->grab();
     pixMap.save("proba2.jpg","JPEG",100);
 
-
     scene->clearSelection();
     scene->setSceneRect(scene->itemsBoundingRect());
     QImage image(gView->sceneRect().size().toSize(), QImage::Format_ARGB32);
     image.fill(Qt::transparent);
     QPainter painter(&image);
     gView->scene()->render(&painter);
-
+    int dpm = 300 / 0.0254; // ~300 DPI
+    image.setDotsPerMeterX(dpm);
+    image.setDotsPerMeterY(dpm);
     image.save("file_name.png");
 
 //    QImage image = selectedScene->toImage(size);

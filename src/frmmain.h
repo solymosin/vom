@@ -48,6 +48,10 @@ public:
     QFont *actFont;
     QSettings *settings;
     QSpinBox *deg;
+    QSpinBox *rot;
+    //QGraphicsLineItem *lrot;
+    bool kortis;
+    QAction* subact;
 
 protected:
     void changeEvent(QEvent *e);
@@ -105,6 +109,8 @@ private slots:
     void betuzo();
     void vonalW();
     void saveSettings();
+    void rotatO();
+    void setKortis();
 
 };
 

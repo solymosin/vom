@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "VOM"
-#define MyAppVersion "0.97"
+#define MyAppVersion "0.99"
 #define MyAppPublisher "Solymosi Norbert"
 #define MyAppURL "http://www.univet.hu/"
 #define MyAppExeName "VOM.exe"

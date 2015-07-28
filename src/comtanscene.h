@@ -32,6 +32,7 @@ public slots:
     void gombKijelol(int i);
     void readPixDist(double dist);
     //void addKor(double x, double y, qreal s, QString d);
+    void addKor(double x, double y, double d, double w, QColor c);
     void addKorB(double x, double y, qreal s, double w, QColor c, double ptx);
     void addPont(double x, double y, QString d);
     void addPontB(double x, double y);

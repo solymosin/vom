@@ -55,19 +55,16 @@ void comtanScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent){
     QGraphicsScene::mousePressEvent(mouseEvent);
 }
 
-//void comtanScene::addKor(double x, double y, qreal s, QString d){
-//    circ = new kor(1, Qt::yellow);
-//    circ->setData(0,"circle");
-//    circ->setData(1, d);
-//    addItem(circ);
-//    circ->setPos(x,y);
-//    circ->setScale(s);
-//    if(d=="TibiaCirc"){
-//        QPen pen(Qt::red, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-//        circ->setPen(pen);
-//    }
-//    emit itemInserted2(circ);
-//}
+void comtanScene::addKor(double x, double y, double d, double w, QColor c){
+    circ = new kor(w, c);
+    circ->setData(0, "circle");
+    addItem(circ);
+    circ->setPos(x, y);
+    double u = circ->shape().boundingRect().width()-1;
+    circ->setScale((d/u)*2);
+    circ->update(x, y, d, d);
+    emit itemInserted2(circ);
+}
 
 void comtanScene::addKorB(double x, double y, qreal s, double w, QColor c, double ptx){
     circ = new kor(w, c);
